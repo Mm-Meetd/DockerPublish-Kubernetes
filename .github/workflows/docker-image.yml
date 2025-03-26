@@ -38,5 +38,5 @@ jobs:
         az aks get-credentials --resource-group ${{ secrets.AZURE_RESOURCE_GROUP }} --name ${{ secrets.AZURE_AKS_CLUSTER }}
     - name: Update Kubernetes Deployment
       run: |
-        kubectl set image deployment/dockerpublish-deployment dockerpublish=meetd/dockerpublish-kubernetes:${{ github.sha }} -n default
-        kubectl rollout status deployment/dockerpublish-deployment -n default
+        kubectl set image deployment/dockerpublish-kubernetes-deployment dockerpublish-kubernetes=meetd/dockerpublish-kubernetes:${{ github.sha }} -n default
+        kubectl rollout status deployment/dockerpublish-kubernetes-deployment -n default
