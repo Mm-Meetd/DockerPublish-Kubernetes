@@ -27,3 +27,12 @@ jobs:
       with:
           push: true
           tags: meetd/dockerpublish-kubernetes:${{ github.sha }}
+    - name: Set up Kubectl
+      uses: azure/setup-kubectl@v3
+      with:
+        version: 'latest'
+
+    - name: Authenticate with AKS
+      run: |
+        az login "a3737467-953c-4977-8aa1-9c7a6e2d0ff4"
+        # az aks get-credentials --resource-group ${{ secrets.AZURE_RESOURCE_GROUP }} --name ${{ secrets.AZURE_AKS_CLUSTER }}
