@@ -1,0 +1,40 @@
+﻿apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dockerpublish-deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: dockerpublish
+  template:
+    metadata:
+      labels:
+        app: dockerpublish
+    spec:
+      containers:
+        - name: dockerpublish
+          image: dockerpublish:latest
+          ports:
+            - containerPort: 8080
+            - containerPort: 8081
+          imagePullPolicy: IfNotPresent
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: dockerpublish-service
+spec:
+  selector:
+    app: dockerpublish
+  ports:
+    - name: http  # Add a unique name for each port
+      protocol: TCP
+      port: 7070
+      targetPort: 8080
+    - name: https  # Add a unique name for each port
+      protocol: TCP
+      port: 7071
+      targetPort: 8081
+  type: LoadBalancer
+
