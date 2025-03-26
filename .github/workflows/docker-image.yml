@@ -39,4 +39,4 @@ jobs:
     - name: Debug - List Files
       run: ls -R
     - name: Deploy to AKS
-      run: kubectl apply -f k8s-deployment.yaml
+      run: kubectl apply -f ../k8s-deployment.yaml
