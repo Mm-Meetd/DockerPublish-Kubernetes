@@ -34,5 +34,5 @@ jobs:
 
     - name: Authenticate with AKS
       run: |
-        az login "a3737467-953c-4977-8aa1-9c7a6e2d0ff4"
+        az login --username hsathwara@magnusminds.net --password Summar@here
         # az aks get-credentials --resource-group ${{ secrets.AZURE_RESOURCE_GROUP }} --name ${{ secrets.AZURE_AKS_CLUSTER }}
