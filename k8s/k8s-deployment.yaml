@@ -1,0 +1,41 @@
+﻿apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dockerpublish-kubernetes-deployment
+  namespace: default
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: dockerpublish-kubernetes
+  template:
+    metadata:
+      labels:
+        app: dockerpublish-kubernetes
+    spec:
+      containers:
+        - name: dockerpublish-kubernetes
+          image: dockerpublish-kubernetes:latest
+          ports:
+            - containerPort: 8080
+            - containerPort: 8081
+          imagePullPolicy: IfNotPresent
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: dockerpublish-kubernetes-service
+spec:
+  selector:
+    app: dockerpublish-kubernetes
+  ports:
+    - name: http  # Add a unique name for each port
+      protocol: TCP
+      port: 7070
+      targetPort: 8080
+    - name: https  # Add a unique name for each port
+      protocol: TCP
+      port: 7071
+      targetPort: 8081
+  type: LoadBalancer
+
