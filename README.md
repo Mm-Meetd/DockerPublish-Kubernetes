@@ -60,29 +60,55 @@ Before you begin, ensure you have the following installed:
           - protocol: TCP
             port: 80
             targetPort: 80
-        type: LoadBalancer
+        type: ClusterIP
       ```
 
-3. **Apply Kubernetes Configuration**
-    - Apply the deployment and service configurations:
+3. **Create Ingress Configuration**
+    - Create an `ingress.yaml` file to define your Kubernetes Ingress:
+      ```yaml
+      apiVersion: networking.k8s.io/v1
+      kind: Ingress
+      metadata:
+        name: <your-project-name>-ingress
+        annotations:
+          nginx.ingress.kubernetes.io/rewrite-target: /
+      spec:
+        rules:
+        - host: <your-domain>
+          http:
+            paths:
+            - path: /
+              pathType: Prefix
+              backend:
+                service:
+                  name: <your-project-name>
+                  port:
+                    number: 80
+      ```
+
+4. **Apply Kubernetes Configuration**
+    - Apply the deployment, service, and ingress configurations:
       ```sh
       kubectl apply -f deployment.yaml
       kubectl apply -f service.yaml
+      kubectl apply -f ingress.yaml
       ```
 
-4. **Verify Deployment**
-    - Check the status of your pods and service:
+5. **Verify Deployment**
+    - Check the status of your pods, service, and ingress:
       ```sh
       kubectl get pods
       kubectl get svc
+      kubectl get ingress
       ```
 
-    - Ensure your application is running and accessible.
+    - Ensure your application is running and accessible via the specified domain.
 
 ## Additional Tips
 
 - **Scaling**: Adjust the `replicas` field in the `deployment.yaml` to scale your application.
 - **Environment Variables**: Use the `env` field in the container spec to set environment variables.
 - **Persistent Storage**: Use PersistentVolume and PersistentVolumeClaim for data persistence.
+- **TLS/SSL**: Configure TLS/SSL for your Ingress by adding a `tls` section to your `ingress.yaml` and referencing your TLS secret.
 
 For more detailed information, refer to the [Kubernetes Documentation](https://kubernetes.io/docs/home/).
