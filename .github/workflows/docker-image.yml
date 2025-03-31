@@ -46,6 +46,7 @@ jobs:
           images: meetd/dockerpublish-kubernetes:${{ github.sha }}
           manifests: |
             ./k8s/k8s-deployment.yaml
+            ./k8s/k8s-ingress.yaml
     - name: Wait for rollout to complete
       run: |
         kubectl rollout status deployment/dockerpublish-kubernetes-deployment -n default
