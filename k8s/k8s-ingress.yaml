@@ -17,4 +17,4 @@ spec:
           service:
             name: dockerpublish-kubernetes-service
             port:
-              number: 80
+              number: 7070
