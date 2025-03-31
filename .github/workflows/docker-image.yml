@@ -29,7 +29,7 @@ jobs:
       uses: docker/build-push-action@v5
       with:
           push: true
-          tags: meetd/dockerpublish-kubernetes:${{ github.sha }}
+          tags: meetd/dockerpublish-kubernetes:latest
     - name: Kubernetes Set Context
       uses: Azure/k8s-set-context@v3.0
       with:
@@ -38,7 +38,7 @@ jobs:
     - name: Deploy to Kubernetes cluster
       uses: Azure/k8s-deploy@v4.9
       with:
-          images: meetd/dockerpublish-kubernetes:${{ github.sha }}
+          images: meetd/dockerpublish-kubernetes:latest
           manifests: |
             ./k8s/k8s-deployment.yaml
     - name: Wait for rollout to complete
