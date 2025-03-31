@@ -35,7 +35,7 @@ spec:
       targetPort: 8080
     - name: https  # Add a unique name for each port
       protocol: TCP
-      port: 7071
+      port: 443
       targetPort: 8081
   type: LoadBalancer
 
