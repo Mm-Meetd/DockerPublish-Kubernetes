@@ -15,7 +15,8 @@ spec:
     spec:
       containers:
         - name: dockerpublish-kubernetes
-          image: dockerpublish-kubernetes:latest
+          image: meetd/dockerpublish-kubernetes:latest
+          imagePullPolicy: Always
           ports:
             - containerPort: 8080
             - containerPort: 8081
