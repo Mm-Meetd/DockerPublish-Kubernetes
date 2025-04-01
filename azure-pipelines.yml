@@ -7,7 +7,9 @@ trigger:
 - main
 
 pool:
-  vmImage: ubuntu-latest
+  name: Self-hosted Pool   # Replace with your self-hosted agent pool name
+  demands:
+    - Agent.OS -equals Linux 
 
 variables:
   buildConfiguration: 'Release'
