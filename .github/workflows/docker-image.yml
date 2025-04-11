@@ -25,6 +25,10 @@ jobs:
       with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
+    - name: 🔍 Debug – Print working directory and list files
+      run: |
+        echo "Current dir: $(pwd)"
+        ls -la
     - name: Replace ConnectionString with Secrets
       working-directory: ${{ github.workspace }}
       run: |
