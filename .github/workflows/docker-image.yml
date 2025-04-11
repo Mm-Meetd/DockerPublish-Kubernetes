@@ -33,48 +33,29 @@ jobs:
       working-directory: ${{ github.workspace }}
       run: |
         sed -i 's|{DATABASE_CONNECTION_STRING}|'"${{ secrets.DATABASE_CONNECTION_STRING }}"'|' DockerPublish/appsettings.json
-    - name: Build and push
-      uses: docker/build-push-action@v5
-      with:
-          push: true
-          tags: meetd/dockerpublish-kubernetes:${{ github.sha }}
-    - name: Update k8s manifest with new image tag
-      run: |
-        sed -i 's|TAG_PLACEHOLDER|meetd/dockerpublish-kubernetes:${{ github.sha }}|g' ./k8s/k8s-deployment.yaml
-        cat ./k8s/k8s-deployment.yaml  # Print updated file for debugging
-        
-    - name: Kubernetes Set Context
-      uses: Azure/k8s-set-context@v3.0
-      with:
-          method: kubeconfig
-          kubeconfig: ${{secrets.K8S_CONFIG}}
-    - name: Deploy to Kubernetes cluster
-      uses: Azure/k8s-deploy@v4.9
-      with:
-          images: meetd/dockerpublish-kubernetes:${{ github.sha }}
-          manifests: |
-            ./k8s/k8s-deployment.yaml
-            ./k8s/k8s-ingress.yaml
-    - name: Wait for rollout to complete
-      run: |
-        kubectl rollout status deployment/dockerpublish-kubernetes-deployment -n default
-    # - name: Set up Kubectl
-    #   uses: azure/setup-kubectl@v3
+        cat DockerPublish/appsettings.json
+    # - name: Build and push
+    #   uses: docker/build-push-action@v5
     #   with:
-    #     version: 'latest'
-
-    # - name: Authenticate with AKS
+    #       push: true
+    #       tags: meetd/dockerpublish-kubernetes:${{ github.sha }}
+    # - name: Update k8s manifest with new image tag
     #   run: |
-    #     az login
-    #     az aks get-credentials --resource-group ${{ secrets.AZURE_RESOURCE_GROUP }} --name ${{ secrets.AZURE_AKS_CLUSTER }}
-    # - name: Deploy to Kubernetes
+    #     sed -i 's|TAG_PLACEHOLDER|meetd/dockerpublish-kubernetes:${{ github.sha }}|g' ./k8s/k8s-deployment.yaml
+    #     cat ./k8s/k8s-deployment.yaml  # Print updated file for debugging
+        
+    # - name: Kubernetes Set Context
+    #   uses: Azure/k8s-set-context@v3.0
+    #   with:
+    #       method: kubeconfig
+    #       kubeconfig: ${{secrets.K8S_CONFIG}}
+    # - name: Deploy to Kubernetes cluster
+    #   uses: Azure/k8s-deploy@v4.9
+    #   with:
+    #       images: meetd/dockerpublish-kubernetes:${{ github.sha }}
+    #       manifests: |
+    #         ./k8s/k8s-deployment.yaml
+    #         ./k8s/k8s-ingress.yaml
+    # - name: Wait for rollout to complete
     #   run: |
-    #       pwd
-    #       ls -R
-    #       kubectl apply -f k8s/k8s-deployment.yaml
-    #       kubectl set image deployment/dockerpublish-kubernetes-deployment dockerpublish-kubernetes=meetd/dockerpublish-kubernetes:${{ github.sha }} -n default
-    #       kubectl rollout status deployment/dockerpublish-kubernetes-deployment -n default
-    # - name: Update Kubernetes Deployment
-    #   run: |
-    #     kubectl set image deployment/dockerpublish-kubernetes-deployment dockerpublish-kubernetes=meetd/dockerpublish-kubernetes:${{ github.sha }} -n default
     #     kubectl rollout status deployment/dockerpublish-kubernetes-deployment -n default
