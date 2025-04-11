@@ -26,6 +26,7 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
     - name: Replace ConnectionString with Secrets
+      working-directory: ${{ github.workspace }}
       run: |
         sed -i 's|{DATABASE_CONNECTION_STRING}|'"${{ secrets.DATABASE_CONNECTION_STRING }}"'|' ./appsettings.json
     - name: Build and push
