@@ -27,8 +27,7 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
     - name: Replace ConnectionString with Secrets
       run: |
-        set -e
-        echo "##[set-output name=appsettings;] { "ConnectionStrings": { "Default": "${{ secrets.DATABASE_CONNECTION_STRING }}" } }" > appsettings.json
+        sed -i 's|{DATABASE_CONNECTION_STRING}|'"${{ secrets.DATABASE_CONNECTION_STRING }}"'|' appsettings.json
     - name: Build and push
       uses: docker/build-push-action@v5
       with:
