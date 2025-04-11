@@ -25,16 +25,20 @@ jobs:
       with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-    - name: 🔍 Debug – Print working directory and list files
-      run: |
-        echo "Current dir: $(pwd)"
-        ls -la
     - name: Replace ConnectionString with Secrets
       working-directory: ${{ github.workspace }}
       run: |
         echo "${{ secrets.DATABASE_CONNECTION_STRING }}"
         sed -i 's|{DATABASE_CONNECTION_STRING}|'"${{ secrets.DATABASE_CONNECTION_STRING }}"'|' DockerPublish/appsettings.json
         cat DockerPublish/appsettings.json
+    - name: Save appsettings.json for inspection
+      run: cp DockerPublish/appsettings.json appsettings-output.json
+
+    - name: Upload appsettings.json as artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: debug-appsettings
+        path: appsettings-output.json
     # - name: Build and push
     #   uses: docker/build-push-action@v5
     #   with:
