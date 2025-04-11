@@ -30,9 +30,10 @@ jobs:
       run: |
         echo "${{ secrets.DATABASE_CONNECTION_STRING }}"
         sed -i 's|{DATABASE_CONNECTION_STRING}|'"${{ secrets.DATABASE_CONNECTION_STRING }}"'|' DockerPublish/appsettings.json
-        cat DockerPublish/appsettings.json
+        
     - name: Copy for upload
-      run: cp DockerPublish/appsettings.json appsettings-debug.json
+      working-directory: ${{ github.workspace }}/DockerPublish
+      run: cp appsettings.json ../appsettings-debug.json
 
     - name: Upload appsettings.json as artifact
       uses: actions/upload-artifact@v3
