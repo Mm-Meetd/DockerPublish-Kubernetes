@@ -31,14 +31,14 @@ jobs:
         echo "${{ secrets.DATABASE_CONNECTION_STRING }}"
         sed -i 's|{DATABASE_CONNECTION_STRING}|'"${{ secrets.DATABASE_CONNECTION_STRING }}"'|' DockerPublish/appsettings.json
         cat DockerPublish/appsettings.json
-    - name: Save appsettings.json for inspection
-      run: cp DockerPublish/appsettings.json appsettings-output.json
+    - name: Copy for upload
+      run: cp DockerPublish/appsettings.json appsettings-debug.json
 
     - name: Upload appsettings.json as artifact
       uses: actions/upload-artifact@v3
       with:
         name: debug-appsettings
-        path: appsettings-output.json
+        path: appsettings-debug.json
     # - name: Build and push
     #   uses: docker/build-push-action@v5
     #   with:
